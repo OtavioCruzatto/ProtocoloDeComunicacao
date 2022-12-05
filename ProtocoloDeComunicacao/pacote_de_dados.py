@@ -27,8 +27,8 @@ class PacoteDeDados:
     def __str__(self) -> str:
         return (f"Pacote: {self.__indice_do_pacote}.\nQuantidade de bytes: {len(self)}.\n"
                 f"Quantidade de dados: {self.get_quantidade_de_dados()}.\nComando: {hex(self.get_comando())}.\n"
-                f"CRC8 (Polinomio 0x07): {hex(self.__crc8)}.\nPacote: {[hex(byte) for byte in self.__pacote_de_dados]}"
-                f"\n")
+                f"CRC8 (Polinomio 0x07): {hex(self.__crc8)}.\nDados: {[hex(byte) for byte in self.__dados]}\n"
+                f"Pacote: {[hex(byte) for byte in self.__pacote_de_dados]}\n")
 
 
     def __len__(self) -> int:
