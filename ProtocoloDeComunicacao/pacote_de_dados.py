@@ -1,9 +1,11 @@
 import crc8
 
+
 class PacoteDeDados:
     quantidade_de_pacotes: int = 0
 
-    def __init__(self, inicializador_1: int, inicializador_2: int, comando: int, dados: list[int] = []) -> None:
+
+    def __init__(self) -> None:
         self.__tamanho_do_pacote: int = 0
         self.__qtd_de_dados: int = 0
 
@@ -14,25 +16,60 @@ class PacoteDeDados:
         self.__pacote_de_dados: list[int] = []
         self.__crc8: int = -1
 
-        self.set_inicializador_1(inicializador_1)
-        self.set_inicializador_2(inicializador_2)
-        self.set_comando(comando)
-        self.set_dados(dados)
-
-        self.update_pacote_de_dados()
         PacoteDeDados.quantidade_de_pacotes += 1
         self.__indice_do_pacote: int = PacoteDeDados.quantidade_de_pacotes
 
 
     def __str__(self) -> str:
-        return (f"Pacote: {self.__indice_do_pacote}.\nQuantidade de bytes: {len(self)}.\n"
-                f"Quantidade de dados: {self.get_quantidade_de_dados()}.\nComando: {hex(self.get_comando())}.\n"
-                f"CRC8 (Polinomio 0x07): {hex(self.__crc8)}.\nDados: {[hex(byte) for byte in self.__dados]}\n"
+        return (f"Pacote: {self.__indice_do_pacote}\nByte inicializador 1: {hex(self.__inicilizador_1)}\n"
+                f"Byte inicializador 2: {hex(self.__inicilizador_2)}\nQtd de bytes no pacote: {len(self)}\n"
+                f"Qtd de bytes de dados: {self.get_quantidade_de_dados()}\nComando: {hex(self.get_comando())}\n"
+                f"CRC8 (Polinomio 0x07): {hex(self.__crc8)}\nDados: {[hex(byte) for byte in self.__dados]}\n"
                 f"Pacote: {[hex(byte) for byte in self.__pacote_de_dados]}\n")
 
 
     def __len__(self) -> int:
         return self.get_tamanho_do_pacote()
+
+
+    def montar(self, inicializador_1: int, inicializador_2: int, comando: int, dados: list[int] = []) -> None:
+        self.set_inicializador_1(inicializador_1)
+        self.set_inicializador_2(inicializador_2)
+        self.set_comando(comando)
+        self.set_dados(dados)
+        self.atualizar()
+
+
+    def decodificar(self, pacote: list[int]) -> None:
+        if (type(pacote) is not list):
+            raise TypeError("Variavel 'pacote' deve ser do tipo list.")
+
+        if (len(pacote) > 260):
+            raise ValueError("Variavel 'pacote' pode conter no maximo 260 elementos.")
+
+        if (len(pacote) < 5):
+            raise ValueError("Variavel 'pacote' deve conter no minimo 5 elementos.")
+
+        if any(not isinstance(byte, int) for byte in pacote):
+            raise ValueError("Elementos da variavel 'pacote' devem ser do tipo int.")
+
+        if any((byte < 0) or (byte > 255) for byte in pacote):
+            raise ValueError("Elementos da variavel 'pacote' devem ser inteiros entre 0 e 255.")
+
+        if PacoteDeDados.__checar_crc8_polinomio_0x07(pacote) is True:
+            self.set_inicializador_1(pacote[0])
+            self.set_inicializador_2(pacote[1])
+            self.set_comando(pacote[2])
+            qtd_de_dados_informado_no_pacote = pacote[3]
+            if qtd_de_dados_informado_no_pacote != 0:
+                self.set_dados(pacote[4:-1])
+            self.__crc8 = pacote[-1]
+            self.__tamanho_do_pacote = len(pacote)
+            self.__pacote_de_dados = pacote
+            if (self.__qtd_de_dados != qtd_de_dados_informado_no_pacote):
+                raise ValueError("Quantidade de dados informada incorreta.")
+        else:
+            raise ValueError("Falha na verificacao do CRC. Obs: CRC8 (polinomio 0x07).")
 
 
     def set_inicializador_1(self, inicializador_1: int) -> None:
@@ -85,17 +122,20 @@ class PacoteDeDados:
         if (type(dados) is not list):
             raise TypeError("Variavel 'dados' deve ser do tipo list.")
 
+        if (len(dados) > 255):
+            raise ValueError("Variavel 'dados' pode conter no maximo 255 elementos.")
+
         if any(not isinstance(dado, int) for dado in dados):
             raise ValueError("Elementos da variavel 'dados' devem ser do tipo int.")
 
-        if (len(dados) > 255):
-            raise ValueError("Variavel 'dados' pode conter no maximo 255 elementos.")
+        if any((dado < 0) or (dado > 255) for dado in dados):
+            raise ValueError("Elementos da variavel 'dados' devem ser inteiros entre 0 e 255.")
 
         self.__dados = dados
         self.__qtd_de_dados = len(self.__dados)
 
 
-    def update_pacote_de_dados(self) -> None:
+    def atualizar(self) -> None:
         if (self.__inicilizador_1 == -1):
             raise ValueError("Variavel 'inicializador_1' nao definida.")
 
@@ -136,3 +176,13 @@ class PacoteDeDados:
         if (crc_8_calculado < 0) or (crc_8_calculado > 255):
             raise ValueError("Erro no calculo do CRC8")
         self.__crc8 = crc_8_calculado
+
+
+    @staticmethod
+    def __checar_crc8_polinomio_0x07(pacote: list[int]) -> bool:
+        crc_8 = crc8.crc8()
+        pacote_de_dados_bytes = bytes(pacote[0:-1])
+        crc_8.update(pacote_de_dados_bytes)
+        crc_8_calculado = int(crc_8.hexdigest(), 16)
+        crc_8_status = (crc_8_calculado == pacote[-1])
+        return crc_8_status
