@@ -208,3 +208,7 @@ class PacoteDeDados:
 
     def esta_valido(self) -> bool:
         return self.__valido
+
+
+    def get_crc8(self) -> int:
+        return self.__crc8

@@ -25,6 +25,3 @@ print(pacote_4)
 
 pacote_5 = PacoteDeDados()
 print((pacote_5))
-
-
-
