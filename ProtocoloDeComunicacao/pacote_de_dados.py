@@ -2,7 +2,7 @@ import crc8
 
 
 class PacoteDeDados:
-    quantidade_de_pacotes: int = 0
+    __quantidade_de_pacotes: int = 0
 
 
     def __init__(self) -> None:
@@ -15,16 +15,27 @@ class PacoteDeDados:
         self.__dados: list[int] = []
         self.__pacote_de_dados: list[int] = []
         self.__crc8: int = -1
+        self.__valido: bool = False
 
-        PacoteDeDados.quantidade_de_pacotes += 1
-        self.__indice_do_pacote: int = PacoteDeDados.quantidade_de_pacotes
+        PacoteDeDados.__quantidade_de_pacotes += 1
+        self.__indice_do_pacote: int = PacoteDeDados.__quantidade_de_pacotes
 
 
     def __str__(self) -> str:
-        return (f"Pacote: {self.__indice_do_pacote}\nByte inicializador 1: {hex(self.__inicilizador_1)}\n"
-                f"Byte inicializador 2: {hex(self.__inicilizador_2)}\nQtd de bytes no pacote: {len(self)}\n"
-                f"Qtd de bytes de dados: {self.get_quantidade_de_dados()}\nComando: {hex(self.get_comando())}\n"
-                f"CRC8 (Polinomio 0x07): {hex(self.__crc8)}\nDados: {[hex(byte) for byte in self.__dados]}\n"
+        if self.__valido:
+            pacote_status = "Valido"
+        else:
+            pacote_status = "Invalido"
+
+        return (f"Pacote: {self.__indice_do_pacote}\n"
+                f"Status: {pacote_status}\n"
+                f"Byte inicializador 1: {hex(self.__inicilizador_1)}\n"
+                f"Byte inicializador 2: {hex(self.__inicilizador_2)}\n"
+                f"Qtd de bytes no pacote: {len(self)}\n"
+                f"Qtd de bytes de dados: {self.get_quantidade_de_dados()}\n"
+                f"Comando: {hex(self.get_comando())}\n"
+                f"CRC8 (Polinomio 0x07): {hex(self.__crc8)}\n"
+                f"Dados: {[hex(byte) for byte in self.__dados]}\n"
                 f"Pacote: {[hex(byte) for byte in self.__pacote_de_dados]}\n")
 
 
@@ -68,6 +79,7 @@ class PacoteDeDados:
             self.__pacote_de_dados = pacote
             if (self.__qtd_de_dados != qtd_de_dados_informado_no_pacote):
                 raise ValueError("Quantidade de dados informada incorreta.")
+            self.__valido = True
         else:
             raise ValueError("Falha na verificacao do CRC. Obs: CRC8 (polinomio 0x07).")
 
@@ -145,6 +157,7 @@ class PacoteDeDados:
         if (self.__comando == -1):
             raise ValueError("Variavel 'comando' nao definida.")
 
+        self.__valido = False
         self.__pacote_de_dados.clear()
         self.__pacote_de_dados.append(self.__inicilizador_1)
         self.__pacote_de_dados.append(self.__inicilizador_2)
@@ -158,6 +171,7 @@ class PacoteDeDados:
         self.__calcular_crc8_polinomio_0x07()
         self.__pacote_de_dados.append(self.__crc8)
         self.__tamanho_do_pacote = len(self.__pacote_de_dados)
+        self.__valido = True
 
 
     def get_tamanho_do_pacote(self) -> int:
@@ -186,3 +200,7 @@ class PacoteDeDados:
         crc_8_calculado = int(crc_8.hexdigest(), 16)
         crc_8_status = (crc_8_calculado == pacote[-1])
         return crc_8_status
+
+
+    def esta_valido(self) -> bool:
+        return self.__valido

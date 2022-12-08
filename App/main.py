@@ -23,3 +23,8 @@ pacote_4 = PacoteDeDados()
 pacote_4.decodificar(pacote_para_decodificar_sem_dados)
 print(pacote_4)
 
+pacote_5 = PacoteDeDados()
+print((pacote_5))
+
+
+
