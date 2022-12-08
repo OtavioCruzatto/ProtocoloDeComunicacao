@@ -40,7 +40,7 @@ class PacoteDeDados:
 
 
     def __len__(self) -> int:
-        return self.get_tamanho_do_pacote()
+        return self.get_tamanho()
 
 
     def montar(self, inicializador_1: int, inicializador_2: int, comando: int, dados: list[int] = []) -> None:
@@ -126,7 +126,7 @@ class PacoteDeDados:
         return self.__comando
 
 
-    def get_pacote_de_dados(self) -> list[int]:
+    def get_pacote(self) -> list[int]:
         return self.__pacote_de_dados
 
 
@@ -145,6 +145,10 @@ class PacoteDeDados:
 
         self.__dados = dados
         self.__qtd_de_dados = len(self.__dados)
+
+
+    def get_dados(self) -> list[int]:
+        return self.__dados
 
 
     def atualizar(self) -> None:
@@ -174,7 +178,7 @@ class PacoteDeDados:
         self.__valido = True
 
 
-    def get_tamanho_do_pacote(self) -> int:
+    def get_tamanho(self) -> int:
         return self.__tamanho_do_pacote
 
 
