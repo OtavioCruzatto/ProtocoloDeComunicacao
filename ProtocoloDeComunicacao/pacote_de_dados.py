@@ -212,3 +212,7 @@ class PacoteDeDados:
 
     def get_crc8(self) -> int:
         return self.__crc8
+
+
+    def get_indice(self) -> int:
+        return  self.__indice_do_pacote
