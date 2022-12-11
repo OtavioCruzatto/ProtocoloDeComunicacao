@@ -352,13 +352,6 @@ class TestClass:
         assert inicializador_2_armazenado == inicializador_2_esperado
 
 
-
-
-
-
-
-
-
     def test_quando_set_comando_recebe_string_deve_retornar_type_error(self):
         with pytest.raises(TypeError):
             # Given (Contexto)
@@ -464,3 +457,210 @@ class TestClass:
         comando_esperado = 254
         assert comando_armazenado == comando_esperado
 
+
+    def test_quando_atualizar_for_chamado_sem_setar_inicializador_1_deve_retornar_value_error(self):
+        with pytest.raises(ValueError):
+            # Given (Contexto)
+            inicializador_2 = 0x55
+            comando = 0x02
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_2(inicializador_2)
+            pacote.set_comando(comando)
+            pacote.atualizar()
+
+            # Then (Desfecho)
+            assert ValueError()
+
+
+    def test_quando_atualizar_for_chamado_sem_setar_inicializador_2_deve_retornar_value_error(self):
+        with pytest.raises(ValueError):
+            # Given (Contexto)
+            inicializador_1 = 0x55
+            comando = 0x02
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_1(inicializador_1)
+            pacote.set_comando(comando)
+            pacote.atualizar()
+
+            # Then (Desfecho)
+            assert ValueError()
+
+
+    def test_quando_atualizar_for_chamado_sem_setar_comando_deve_retornar_value_error(self):
+        with pytest.raises(ValueError):
+            # Given (Contexto)
+            inicializador_1 = 0x55
+            inicializador_2 = 0xaa
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_1(inicializador_1)
+            pacote.set_inicializador_2(inicializador_2)
+            pacote.atualizar()
+
+            # Then (Desfecho)
+            assert ValueError()
+
+
+    def test_quando_atualizar_for_chamado_com_inicializadores_comando_e_sem_dados_deve_montar_o_pacote(self):
+        # Given (Contexto)
+        inicializador_1 = 0xaa
+        inicializador_2 = 0x55
+        comando = 0x7f
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_inicializador_1(inicializador_1)
+        pacote.set_inicializador_2(inicializador_2)
+        pacote.set_comando(comando)
+        pacote.atualizar()
+        pacote_montado = pacote.get_pacote()
+
+        # Then (Desfecho)
+        pacote_esperado = [0xaa, 0x55, 0x7f, 0x00, 0xe6]
+        assert pacote_montado == pacote_esperado
+
+
+    def test_quando_atualizar_for_chamado_com_inicializadores_comando_e_sem_dados_o_pacote_deve_ter_tamanho_5(self):
+        # Given (Contexto)
+        inicializador_1 = 0xaa
+        inicializador_2 = 0x55
+        comando = 0x7f
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_inicializador_1(inicializador_1)
+        pacote.set_inicializador_2(inicializador_2)
+        pacote.set_comando(comando)
+        pacote.atualizar()
+        tamanho_pacote_montado = pacote.get_tamanho()
+
+        # Then (Desfecho)
+        tamanho_pacote_esperado = 5
+        assert tamanho_pacote_montado == tamanho_pacote_esperado
+
+
+    def test_quando_atualizar_for_chamado_com_inicializadores_comando_e_sem_dados_a_qtd_de_dados_deve_ser_0(self):
+        # Given (Contexto)
+        inicializador_1 = 0xaa
+        inicializador_2 = 0x55
+        comando = 0x7f
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_inicializador_1(inicializador_1)
+        pacote.set_inicializador_2(inicializador_2)
+        pacote.set_comando(comando)
+        pacote.atualizar()
+        qtd_dados_no_pacote = pacote.get_quantidade_de_dados()
+
+        # Then (Desfecho)
+        qtd_dados_esperados = 0
+        assert qtd_dados_no_pacote == qtd_dados_esperados
+
+
+    def test_quando_atualizar_for_chamado_com_inicializadores_comando_e_sem_dados_o_pacote_deve_ser_valido(self):
+        # Given (Contexto)
+        inicializador_1 = 0xaa
+        inicializador_2 = 0x55
+        comando = 0x7f
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_inicializador_1(inicializador_1)
+        pacote.set_inicializador_2(inicializador_2)
+        pacote.set_comando(comando)
+        pacote.atualizar()
+        pacote_montado_valido = pacote.esta_valido()
+
+        # Then (Desfecho)
+        pacote_esperado_valido = True
+        assert pacote_montado_valido == pacote_esperado_valido
+
+
+    def test_quando_atualizar_for_chamado_com_inicializadores_comando_e_com_dados_deve_montar_o_pacote(self):
+        # Given (Contexto)
+        inicializador_1 = 0xaa
+        inicializador_2 = 0x55
+        comando = 0x7f
+        dados = [0x70, 0xb4, 0xf7, 0x03, 0x68]
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_inicializador_1(inicializador_1)
+        pacote.set_inicializador_2(inicializador_2)
+        pacote.set_comando(comando)
+        pacote.set_dados(dados)
+        pacote.atualizar()
+        pacote_montado = pacote.get_pacote()
+
+        # Then (Desfecho)
+        pacote_esperado = [0xaa, 0x55, 0x7f, 0x05, 0x70, 0xb4, 0xf7, 0x03, 0x68, 0xf9]
+        assert pacote_montado == pacote_esperado
+
+
+    def test_quando_atualizar_for_chamado_com_inicializadores_comando_e_com_dados_o_pacote_deve_ter_tamanho_10(self):
+        # Given (Contexto)
+        inicializador_1 = 0xaa
+        inicializador_2 = 0x55
+        comando = 0x7f
+        dados = [0x70, 0xb4, 0xf7, 0x03, 0x68]
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_inicializador_1(inicializador_1)
+        pacote.set_inicializador_2(inicializador_2)
+        pacote.set_comando(comando)
+        pacote.set_dados(dados)
+        pacote.atualizar()
+        tamanho_pacote_montado = pacote.get_tamanho()
+
+        # Then (Desfecho)
+        tamanho_pacote_esperado = 10
+        assert tamanho_pacote_montado == tamanho_pacote_esperado
+
+
+    def test_quando_atualizar_for_chamado_com_inicializadores_comando_e_com_dados_a_qtd_de_dados_deve_ser_5(self):
+        # Given (Contexto)
+        inicializador_1 = 0xaa
+        inicializador_2 = 0x55
+        comando = 0x7f
+        dados = [0x70, 0xb4, 0xf7, 0x03, 0x68]
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_inicializador_1(inicializador_1)
+        pacote.set_inicializador_2(inicializador_2)
+        pacote.set_comando(comando)
+        pacote.set_dados(dados)
+        pacote.atualizar()
+        qtd_dados_no_pacote = pacote.get_quantidade_de_dados()
+
+        # Then (Desfecho)
+        qtd_dados_esperados = 5
+        assert qtd_dados_no_pacote == qtd_dados_esperados
+
+
+    def test_quando_atualizar_for_chamado_com_inicializadores_comando_e_com_dados_o_pacote_deve_ser_valido(self):
+        # Given (Contexto)
+        inicializador_1 = 0xaa
+        inicializador_2 = 0x55
+        comando = 0x7f
+        dados = [0x70, 0xb4, 0xf7, 0x03, 0x68]
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_inicializador_1(inicializador_1)
+        pacote.set_inicializador_2(inicializador_2)
+        pacote.set_comando(comando)
+        pacote.set_dados(dados)
+        pacote.atualizar()
+        pacote_montado_valido = pacote.esta_valido()
+
+        # Then (Desfecho)
+        pacote_esperado_valido = True
+        assert pacote_montado_valido == pacote_esperado_valido
