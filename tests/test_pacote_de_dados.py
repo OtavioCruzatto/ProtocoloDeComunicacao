@@ -138,3 +138,218 @@ class TestClass:
         # Then (Desfecho)
         esta_valido_esperado = False
         assert esta_valido_recebido == esta_valido_esperado
+
+
+    def test_quando_set_inicializador_1_recebe_string_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            inicializador_1_entrada = "0xAA"
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_1(inicializador_1_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_inicializador_1_recebe_float_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            inicializador_1_entrada = 0.25
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_1(inicializador_1_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_inicializador_1_recebe_lista_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            inicializador_1_entrada = []
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_1(inicializador_1_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_inicializador_1_recebe_tupla_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            inicializador_1_entrada = ()
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_1(inicializador_1_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_inicializador_1_recebe_int_menor_que_0_deve_retornar_value_error(self):
+        with pytest.raises(ValueError):
+            # Given (Contexto)
+            inicializador_1_entrada = -1
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_1(inicializador_1_entrada)
+
+            # Then (Desfecho)
+            assert ValueError()
+
+
+    def test_quando_set_inicializador_1_recebe_int_maior_que_255_deve_retornar_value_error(self):
+        with pytest.raises(ValueError):
+            # Given (Contexto)
+            inicializador_1_entrada = 256
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_1(inicializador_1_entrada)
+
+            # Then (Desfecho)
+            assert ValueError()
+
+
+    def test_quando_set_inicializador_1_recebe_1_deve_armazenar_1(self):
+        # Given (Contexto)
+        inicializador_1_entrada = 0
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_inicializador_1(inicializador_1_entrada)
+        inicializador_1_armazenado = pacote.get_inicializador_1()
+
+        # Then (Desfecho)
+        inicializador_1_esperado = 0
+        assert inicializador_1_armazenado == inicializador_1_esperado
+
+
+    def test_quando_set_inicializador_1_recebe_255_deve_armazenar_255(self):
+        # Given (Contexto)
+        inicializador_1_entrada = 255
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_inicializador_1(inicializador_1_entrada)
+        inicializador_1_armazenado = pacote.get_inicializador_1()
+
+        # Then (Desfecho)
+        inicializador_1_esperado = 255
+        assert inicializador_1_armazenado == inicializador_1_esperado
+
+
+    def test_quando_set_inicializador_2_recebe_string_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            inicializador_2_entrada = "0xAA"
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_2(inicializador_2_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_inicializador_2_recebe_float_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            inicializador_2_entrada = 0.25
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_2(inicializador_2_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_inicializador_2_recebe_lista_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            inicializador_2_entrada = []
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_2(inicializador_2_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_inicializador_2_recebe_tupla_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            inicializador_2_entrada = ()
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_2(inicializador_2_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_inicializador_2_recebe_int_menor_que_0_deve_retornar_value_error(self):
+        with pytest.raises(ValueError):
+            # Given (Contexto)
+            inicializador_2_entrada = -1
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_2(inicializador_2_entrada)
+
+            # Then (Desfecho)
+            assert ValueError()
+
+
+    def test_quando_set_inicializador_2_recebe_int_maior_que_255_deve_retornar_value_error(self):
+        with pytest.raises(ValueError):
+            # Given (Contexto)
+            inicializador_2_entrada = 256
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_inicializador_2(inicializador_2_entrada)
+
+            # Then (Desfecho)
+            assert ValueError()
+
+
+    def test_quando_set_inicializador_2_recebe_1_deve_armazenar_1(self):
+        # Given (Contexto)
+        inicializador_2_entrada = 0
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_inicializador_2(inicializador_2_entrada)
+        inicializador_2_armazenado = pacote.get_inicializador_2()
+
+        # Then (Desfecho)
+        inicializador_2_esperado = 0
+        assert inicializador_2_armazenado == inicializador_2_esperado
+
+
+    def test_quando_set_inicializador_2_recebe_255_deve_armazenar_255(self):
+        # Given (Contexto)
+        inicializador_2_entrada = 255
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_inicializador_2(inicializador_2_entrada)
+        inicializador_2_armazenado = pacote.get_inicializador_2()
+
+        # Then (Desfecho)
+        inicializador_2_esperado = 255
+        assert inicializador_2_armazenado == inicializador_2_esperado
+
+
+
