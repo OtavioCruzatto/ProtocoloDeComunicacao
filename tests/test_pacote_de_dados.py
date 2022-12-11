@@ -664,3 +664,226 @@ class TestClass:
         # Then (Desfecho)
         pacote_esperado_valido = True
         assert pacote_montado_valido == pacote_esperado_valido
+
+
+    def test_quando_set_dados_recebe_string_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            dados_entrada = "[0x79, 0x56, 0x46]"
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_dados(dados_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_dados_recebe_int_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            dados_entrada = 0x79
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_dados(dados_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_dados_recebe_float_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            dados_entrada = 12.5
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_dados(dados_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_dados_recebe_uma_lista_com_256_elementos_deve_retornar_value_error(self):
+        with pytest.raises(ValueError):
+            # Given (Contexto)
+            dados_entrada = [0xaa for _ in range(256)]
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_dados(dados_entrada)
+
+            # Then (Desfecho)
+            assert ValueError()
+
+
+    def test_quando_set_dados_recebe_uma_lista_contendo_uma_string_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            dados_entrada = [0xaa, 0x55, 0xf7, 0xff, "0x53", 0x56]
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_dados(dados_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_dados_recebe_uma_lista_contendo_um_float_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            dados_entrada = [0xaa, 0x55, 0xf7, 0xff, 53.4, 0x56]
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_dados(dados_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_dados_recebe_uma_lista_contendo_uma_lista_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            dados_entrada = [0xaa, 0x55, 0xf7, 0xff, [], 0x56]
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_dados(dados_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_dados_recebe_uma_lista_contendo_uma_tupla_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            dados_entrada = [0xaa, 0x55, 0xf7, 0xff, (), 0x56]
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_dados(dados_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_dados_recebe_uma_lista_contendo_um_int_menor_que_0_deve_retornar_value_error(self):
+        with pytest.raises(ValueError):
+            # Given (Contexto)
+            dados_entrada = [0xaa, 0x55, 0xf7, 0xff, -1, 0x56]
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_dados(dados_entrada)
+
+            # Then (Desfecho)
+            assert ValueError()
+
+
+    def test_quando_set_dados_recebe_uma_lista_contendo_um_int_maior_que_255_deve_retornar_value_error(self):
+        with pytest.raises(ValueError):
+            # Given (Contexto)
+            dados_entrada = [0xaa, 0x55, 0xf7, 0xff, 256, 0x56]
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_dados(dados_entrada)
+
+            # Then (Desfecho)
+            assert ValueError()
+
+
+    def test_quando_set_dados_recebe_uma_lista_valida_de_6_elementos_deve_armazenar_os_6_elementos(self):
+        # Given (Contexto)
+        dados_entrada = [0xaa, 0x55, 0xf7, 0xff, 0x12, 0x56]
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_dados(dados_entrada)
+        dados_armazenados = pacote.get_dados()
+
+        # Then (Desfecho)
+        dados_esperados = [0xaa, 0x55, 0xf7, 0xff, 0x12, 0x56]
+        assert dados_armazenados == dados_esperados
+
+
+    def test_quando_set_dados_recebe_uma_lista_valida_de_6_elementos_deve_setar_qtd_de_dados_com_6(self):
+        # Given (Contexto)
+        dados_entrada = [0xaa, 0x55, 0xf7, 0xff, 0x12, 0x56]
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_dados(dados_entrada)
+        qtd_dados_armazenados = pacote.get_quantidade_de_dados()
+
+        # Then (Desfecho)
+        qtd_dados_esperados = 6
+        assert qtd_dados_armazenados == qtd_dados_esperados
+
+
+    def test_quando_montar_recebe_todos_os_parametros_validos_deve_armazenar_o_pacote(self):
+        # Given (Contexto)
+        inicializador_1 = 0xaa
+        inicializador_2 = 0x55
+        comando = 0x7f
+        dados = [0x70, 0xb4, 0xf7, 0x03, 0x68]
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.montar(inicializador_1, inicializador_2, comando, dados=dados)
+        pacote_armazenado = pacote.get_pacote()
+
+        # Then (Desfecho)
+        pacote_esperado = [0xaa, 0x55, 0x7f, 0x05, 0x70, 0xb4, 0xf7, 0x03, 0x68, 0xf9]
+        assert pacote_armazenado == pacote_esperado
+
+
+    def test_quando_montar_recebe_todos_os_parametros_validos_deve_apresentar_os_dados_como_string(self):
+        # Given (Contexto)
+        inicializador_1 = 0xaa
+        inicializador_2 = 0x55
+        comando = 0x7f
+        dados = [0x70, 0xb4, 0xf7, 0x03, 0x68]
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.montar(inicializador_1, inicializador_2, comando, dados=dados)
+        apresentar_pacote_como_string = str(pacote)
+
+        # Then (Desfecho)
+        string_esperada = ( f"Pacote: {pacote.get_indice()}\n"
+                            "Status: Valido\n"
+                            "Byte inicializador 1: 0xaa\n"
+                            "Byte inicializador 2: 0x55\n"
+                            "Qtd de bytes no pacote: 10\n"
+                            "Qtd de bytes de dados: 5\n"
+                            "Comando: 0x7f\n"
+                            "CRC8 (Polinomio 0x07): 0xf9\n"
+                            "Dados: ['0x70', '0xb4', '0xf7', '0x3', '0x68']\n"
+                            "Pacote: ['0xaa', '0x55', '0x7f', '0x5', '0x70', '0xb4', '0xf7', '0x3', '0x68', '0xf9']\n")
+        assert apresentar_pacote_como_string == string_esperada
+
+
+    def test_quando_pacote_estives_invalido_deve_apresentar_os_dados_como_string(self):
+        # Given (Contexto)
+        # NA
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        apresentar_pacote_como_string = str(pacote)
+
+        # Then (Desfecho)
+        string_esperada = (f"Pacote: {pacote.get_indice()}\n"
+                            "Status: Invalido\n"
+                            "Byte inicializador 1: -0x1\n"
+                            "Byte inicializador 2: -0x1\n"
+                            "Qtd de bytes no pacote: 0\n"
+                            "Qtd de bytes de dados: 0\n"
+                            "Comando: -0x1\n"
+                            "CRC8 (Polinomio 0x07): -0x1\n"
+                            "Dados: []\n"
+                            "Pacote: []\n")
+        assert apresentar_pacote_como_string == string_esperada

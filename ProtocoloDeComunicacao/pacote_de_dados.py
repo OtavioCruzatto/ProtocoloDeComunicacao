@@ -138,7 +138,7 @@ class PacoteDeDados:
             raise ValueError("Variavel 'dados' pode conter no maximo 255 elementos.")
 
         if any(not isinstance(dado, int) for dado in dados):
-            raise ValueError("Elementos da variavel 'dados' devem ser do tipo int.")
+            raise TypeError("Elementos da variavel 'dados' devem ser do tipo int.")
 
         if any((dado < 0) or (dado > 255) for dado in dados):
             raise ValueError("Elementos da variavel 'dados' devem ser inteiros entre 0 e 255.")

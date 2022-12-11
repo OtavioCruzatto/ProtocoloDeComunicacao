@@ -25,3 +25,11 @@ print(pacote_4)
 
 pacote_5 = PacoteDeDados()
 print((pacote_5))
+
+pacote_6 = PacoteDeDados()
+inicializador_1 = 0xaa
+inicializador_2 = 0x55
+comando = 0x7f
+dados = [0x70, 0xb4, 0xf7, 0x03, 0x68]
+pacote_6.montar(inicializador_1, inicializador_2, comando, dados=dados)
+print(pacote_6)
