@@ -1,0 +1,87 @@
+=======================================================================================================================
+
+Para atualizar o pip no ambiente virtual (venv) '*\PycharmProjects\tdd\venv\Scripts\python.exe':
+*\venv\Scripts\python.exe -m pip install --upgrade pip
+Obs: * é o caminho completo até o diretório do projeto
+
+Para atualizar as dependências no arquivo 'requirements.txt' após instalação da dependência no ambiente virtual (venv):
+pip freeze > requirements.txt
+
+Para listar as libs instaladas no ambiente virtual (venv):
+pip list
+
+Para instalar o pytest em um ambiente virtual (venv):
+pip install pytest==7.1.2
+Obs: 7.1.2 é a versão desejada
+
+Para instalar o pytest-coverage em um ambiente virtual (venv):
+pip install pytest-cov==3.0.0
+Obs: 3.0.0 é a versão desejada
+
+=======================================================================================================================
+
+Para rodar todos os testes:
+pytest
+
+Para rodar todos os testes no modo verboso:
+pytest -v
+
+Para rodar os testes que contenham a palavra 'idade' no nome:
+pytest -k idade
+
+Para rodar os testes que contenham a palavra 'idade' no nome no modo verboso:
+pytest -v -k idade
+pytest -vk idade
+
+Para verificar as opções de markers disponíveis:
+pytest --markers
+
+Para rodar os testes que estejam marcados com o marker 'calcular_bonus' no modo verboso:
+pytest -v -m calcular_bonus
+
+=======================================================================================================================
+
+Para verificar a cobertura de todos os arquivos:
+pytest --cov
+Obs: Os arquivos podem ser limitados no arquivo '.coveragerc' no parametro 'source'
+
+Para verificar a cobertura em um arquivo específico 'ProtocoloDeComunicacao.pacote_de_dados':
+pytest --cov=ProtocoloDeComunicacao.pacote_de_dados tests/
+
+Para verificar as linhas que não estão sendo cobertos pelos testes em um arquivo específico 'ProtocoloDeComunicacao.pacote_de_dados':
+pytest --cov=ProtocoloDeComunicacao.pacote_de_dados tests/ --cov-report term-missing
+Obs: Este comando exibe o número da linha que está sem cobertura
+
+Para gerar o relatório de cobertura em formato HTML:
+pytest --cov=ProtocoloDeComunicacao.pacote_de_dados tests/ --cov-report html
+Obs: O pytest cria o arquivo index.html dentro do diretório htmlcov.
+     Após abrir esse arquivo no navegador, pode ser observado o desenho de um teclado no canto superior direito.
+     Clicando sobre ele, podemos ver alguns atalho para utilizar no html.
+     O atalho ']', leva para uma página que contem o código fonte com a possibilidade de fazer um highlight das linhas
+     que estão cobertas pelos testes e as que não estão.
+     O diretório onde o relatório será gerado pode ser modificado no arquivo '.coveragerc' no parametro directory.
+
+Para excluir linhas da verificação do coverage (quando não faz sentido testá-las):
+Indicar a linha que deve ser ignorada pelo relatório no arquivo '.coveragerc' no parâmetro 'exclude_lines'.
+Esta linha agora não ficará como uma falta de cobertura no relatório (não ficará como missing), ficará como excluded.
+
+Para gerar o relatório de cobertura em formato XML:
+pytest --junitxml report.xml
+Obs: Um arquivo chamado 'report.xml' será criado na pasta raiz do projeto, com as informações de coverage.
+
+Para gerar o relatório de cobertura em formato XML (outro formato de relatório):
+pytest --cov-report xml
+Obs: Um arquivo chamado 'coverage.xml' será criado na pasta raiz do projeto, com as informações de coverage.
+
+=======================================================================================================================
+
+Para que o pytest faça várias funções (ficar verboso, gerar relatório, etc) só digitando pytest:
+Adicionar os parâmetros do comando pytest que deve ser executados todas as vezes que pytest for executado no arquivo
+'pytest.ini', no parâmetro 'addopts'.
+
+=======================================================================================================================
+
+Para criar um marker no pytest:
+Criar o marker no arquivo 'pytest.ini' no parâmetro 'markers'.
+
+=======================================================================================================================
