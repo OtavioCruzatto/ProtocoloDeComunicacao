@@ -220,7 +220,7 @@ class TestClass:
 
     def test_quando_set_inicializador_1_recebe_1_deve_armazenar_1(self):
         # Given (Contexto)
-        inicializador_1_entrada = 0
+        inicializador_1_entrada = 1
 
         # When (Ação)
         pacote = PacoteDeDados()
@@ -228,7 +228,7 @@ class TestClass:
         inicializador_1_armazenado = pacote.get_inicializador_1()
 
         # Then (Desfecho)
-        inicializador_1_esperado = 0
+        inicializador_1_esperado = 1
         assert inicializador_1_armazenado == inicializador_1_esperado
 
 
@@ -326,7 +326,7 @@ class TestClass:
 
     def test_quando_set_inicializador_2_recebe_1_deve_armazenar_1(self):
         # Given (Contexto)
-        inicializador_2_entrada = 0
+        inicializador_2_entrada = 1
 
         # When (Ação)
         pacote = PacoteDeDados()
@@ -334,7 +334,7 @@ class TestClass:
         inicializador_2_armazenado = pacote.get_inicializador_2()
 
         # Then (Desfecho)
-        inicializador_2_esperado = 0
+        inicializador_2_esperado = 1
         assert inicializador_2_armazenado == inicializador_2_esperado
 
 
@@ -352,4 +352,115 @@ class TestClass:
         assert inicializador_2_armazenado == inicializador_2_esperado
 
 
+
+
+
+
+
+
+
+    def test_quando_set_comando_recebe_string_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            comando_entrada = "0xAA"
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_comando(comando_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_comando_recebe_float_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            comando_entrada = 0.25
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_comando(comando_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_comando_recebe_lista_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            comando_entrada = []
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_comando(comando_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_comando_recebe_tupla_deve_retornar_type_error(self):
+        with pytest.raises(TypeError):
+            # Given (Contexto)
+            comando_entrada = ()
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_comando(comando_entrada)
+
+            # Then (Desfecho)
+            assert TypeError()
+
+
+    def test_quando_set_comando_recebe_int_menor_que_1_deve_retornar_value_error(self):
+        with pytest.raises(ValueError):
+            # Given (Contexto)
+            comando_entrada = 0
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_comando(comando_entrada)
+
+            # Then (Desfecho)
+            assert ValueError()
+
+
+    def test_quando_set_comando_recebe_int_maior_que_254_deve_retornar_value_error(self):
+        with pytest.raises(ValueError):
+            # Given (Contexto)
+            comando_entrada = 255
+
+            # When (Ação)
+            pacote = PacoteDeDados()
+            pacote.set_comando(comando_entrada)
+
+            # Then (Desfecho)
+            assert ValueError()
+
+
+    def test_quando_set_comando_recebe_1_deve_armazenar_1(self):
+        # Given (Contexto)
+        comando_entrada = 1
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_comando(comando_entrada)
+        comando_armazenado = pacote.get_comando()
+
+        # Then (Desfecho)
+        comando_esperado = 1
+        assert comando_armazenado == comando_esperado
+
+
+    def test_quando_set_comando_recebe_254_deve_armazenar_254(self):
+        # Given (Contexto)
+        comando_entrada = 254
+
+        # When (Ação)
+        pacote = PacoteDeDados()
+        pacote.set_comando(comando_entrada)
+        comando_armazenado = pacote.get_comando()
+
+        # Then (Desfecho)
+        comando_esperado = 254
+        assert comando_armazenado == comando_esperado
 
