@@ -43,6 +43,10 @@ class PacoteDeDados:
         return self.get_tamanho()
 
 
+    def __del__(self) -> None:
+        PacoteDeDados.__quantidade_de_pacotes -= 1
+
+
     def montar(self, inicializador_1: int, inicializador_2: int, comando: int, dados: list[int] = []) -> None:
         self.set_inicializador_1(inicializador_1)
         self.set_inicializador_2(inicializador_2)
