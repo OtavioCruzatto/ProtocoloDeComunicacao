@@ -20,6 +20,23 @@ class TestClass:
         del self
 
 
+    @fixture
+    def pacote_x_200(self):
+
+        # SetUp
+        # print("\nBloco executado antes de cada teste!")
+        pacotes = []
+        for _ in range(200):
+            pacotes.append(PacoteDeDados())
+
+        # Exercise and Assert
+        yield pacotes
+
+        # TearDown
+        # print("\nBloco executado após cada teste!")
+        del self
+
+
     def test_quando_instanciar_5_pacotes_o_quinto_pacote_deve_ter_indice_5(self):
         # Given
         # NA
@@ -40,6 +57,52 @@ class TestClass:
         # Then
         indice_esperado = 5
         assert indice_recebido == indice_esperado
+
+
+    def test_quando_instanciar_5_pacotes_e_destruir_os_primeiros_3_o_proximo_pacote_instanciado_deve_ter_indice_1(self):
+        # Given
+        # NA
+
+        # When
+        pacote_1 = PacoteDeDados()
+        pacote_2 = PacoteDeDados()
+        pacote_3 = PacoteDeDados()
+        pacote_4 = PacoteDeDados()
+        pacote_5 = PacoteDeDados()
+        del pacote_1
+        del pacote_2
+        del pacote_3
+        novo_pacote = PacoteDeDados()
+        indice_recebido = novo_pacote.get_indice()
+        del pacote_4
+        del pacote_5
+        del novo_pacote
+
+        # Then
+        indice_esperado = 1
+        assert indice_recebido == indice_esperado
+
+
+    def test_quando_instanciar_5_pacotes_e_destruir_3_a_quantidade_de_pacotes_deve_ser_2(self):
+        # Given
+        # NA
+
+        # When
+        pacote_1 = PacoteDeDados()
+        pacote_2 = PacoteDeDados()
+        pacote_3 = PacoteDeDados()
+        pacote_4 = PacoteDeDados()
+        pacote_5 = PacoteDeDados()
+        del pacote_1
+        del pacote_2
+        del pacote_3
+        quantidade_de_pacotes_recebido = PacoteDeDados.get_quantidade_de_pacotes()
+        del pacote_4
+        del pacote_5
+
+        # Then
+        quantidade_de_pacotes_esperado = 2
+        assert quantidade_de_pacotes_recebido == quantidade_de_pacotes_esperado
 
 
     def test_quando_instanciar_pacote_tamanho_do_pacote_deve_ter_valor_0(self, pacote):
@@ -801,6 +864,17 @@ class TestClass:
         # Then
         pacote_esperado = [0xaa, 0x55, 0x7f, 0x05, 0x70, 0xb4, 0xf7, 0x03, 0x68, 0xf9]
         assert pacote_armazenado == pacote_esperado
+
+
+    def test_quando_for_instanciado_201_pacotes_de_dados_deve_retornar_value_error(self, pacote_x_200):
+        with pytest.raises(ValueError):
+            # Given
+
+            # When
+            pacote_x_200.append(PacoteDeDados())
+
+            # Then
+            assert ValueError()
 
 
     def test_quando_montar_recebe_todos_os_parametros_validos_deve_apresentar_os_dados_como_string(self, pacote):
