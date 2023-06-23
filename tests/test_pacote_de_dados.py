@@ -902,7 +902,7 @@ class TestClass:
         assert apresentar_pacote_como_string == string_esperada
 
 
-    def test_quando_pacote_estives_invalido_deve_apresentar_os_dados_como_string(self, pacote):
+    def test_quando_pacote_estiver_invalido_deve_apresentar_os_dados_como_string(self, pacote):
         # Given
         # NA
 
@@ -921,3 +921,247 @@ class TestClass:
                             "Dados: []\n"
                             "Pacote: []\n")
         assert apresentar_pacote_como_string == string_esperada
+
+    def test_quando_decodificar_receber_pacote_de_apenas_um_inteiro_deve_retornar_type_error(self, pacote):
+        with pytest.raises(TypeError):
+            # Given
+            # NA
+
+            # When
+            pacote.decodificar(int(1))
+
+            # Then
+            assert TypeError()
+
+    def test_quando_decodificar_receber_pacote_de_apenas_um_float_deve_retornar_type_error(self, pacote):
+        with pytest.raises(TypeError):
+            # Given
+            # NA
+
+            # When
+            pacote.decodificar(float(1.5))
+
+            # Then
+            assert TypeError()
+
+    def test_quando_decodificar_receber_pacote_de_apenas_um_char_deve_retornar_type_error(self, pacote):
+        with pytest.raises(TypeError):
+            # Given
+            # NA
+
+            # When
+            pacote.decodificar("a")
+
+            # Then
+            assert TypeError()
+
+    def test_quando_decodificar_receber_pacote_de_uma_string_deve_retornar_type_error(self, pacote):
+        with pytest.raises(TypeError):
+            # Given
+            # NA
+
+            # When
+            pacote.decodificar("abcde")
+
+            # Then
+            assert TypeError()
+
+    def test_quando_decodificar_receber_uma_lista_com_mais_de_260_elementos_deve_retornar_value_error(self, pacote):
+        with pytest.raises(ValueError):
+            # Given
+            # NA
+
+            # When
+            pacote_a_ser_decodificado = [(int(i/2)) for i in range(261)]
+            pacote.decodificar(pacote_a_ser_decodificado)
+
+            # Then
+            assert ValueError()
+
+    def test_quando_decodificar_receber_uma_lista_com_menos_de_5_elementos_deve_retornar_value_error(self, pacote):
+        with pytest.raises(ValueError):
+            # Given
+            # NA
+
+            # When
+            pacote_a_ser_decodificado = [(int(i)) for i in range(4)]
+            pacote.decodificar(pacote_a_ser_decodificado)
+
+            # Then
+            assert ValueError()
+
+    def test_quando_decodificar_receber_uma_lista_contendo_um_float_deve_retornar_value_error(self, pacote):
+        with pytest.raises(ValueError):
+            # Given
+            # NA
+
+            # When
+            pacote_a_ser_decodificado = [5, 6, 7.5, 8 ,9]
+            pacote.decodificar(pacote_a_ser_decodificado)
+
+            # Then
+            assert ValueError()
+
+    def test_quando_decodificar_receber_uma_lista_contendo_um_char_deve_retornar_value_error(self, pacote):
+        with pytest.raises(ValueError):
+            # Given
+            # NA
+
+            # When
+            pacote_a_ser_decodificado = [5, 6, "7", 8 ,9]
+            pacote.decodificar(pacote_a_ser_decodificado)
+
+            # Then
+            assert ValueError()
+
+    def test_quando_decodificar_receber_uma_lista_contendo_uma_string_deve_retornar_value_error(self, pacote):
+        with pytest.raises(ValueError):
+            # Given
+            # NA
+
+            # When
+            pacote_a_ser_decodificado = [5, 6, "7567", 8 ,9]
+            pacote.decodificar(pacote_a_ser_decodificado)
+
+            # Then
+            assert ValueError()
+
+    def test_quando_decodificar_receber_uma_lista_contendo_um_valor_maior_que_255_deve_retornar_value_error(self, pacote):
+        with pytest.raises(ValueError):
+            # Given
+            # NA
+
+            # When
+            pacote_a_ser_decodificado = [5, 6, 256, 8 ,9]
+            pacote.decodificar(pacote_a_ser_decodificado)
+
+            # Then
+            assert ValueError()
+
+    def test_quando_decodificar_receber_uma_lista_contendo_um_valor_menor_que_0_deve_retornar_value_error(self, pacote):
+        with pytest.raises(ValueError):
+            # Given
+            # NA
+
+            # When
+            pacote_a_ser_decodificado = [5, 6, -1, 8 ,9]
+            pacote.decodificar(pacote_a_ser_decodificado)
+
+            # Then
+            assert ValueError()
+
+    def test_quando_decodificar_receber_uma_lista_com_crc8_invalido_deve_retornar_value_error(self, pacote):
+        with pytest.raises(ValueError):
+            # Given
+            # NA
+
+            # When
+            pacote_a_ser_decodificado = [5, 6, 7, 8 ,9]
+            pacote.decodificar(pacote_a_ser_decodificado)
+
+            # Then
+            assert ValueError()
+
+    def test_quando_decodificar_receber_uma_lista_com_inicializador_1_0x31_o_byte_decodificado_deve_ser_0x31(self, pacote):
+        # Given
+        # NA
+
+        # When
+        pacote_a_ser_decodificado = [0x31, 0x32, 0x33, 0x05, 0x35, 0x36, 0x37, 0x38, 0x39, 0x78]
+        pacote.decodificar(pacote_a_ser_decodificado)
+
+        # Then
+        byte_inicializador_1_esperado = 0x31
+        byte_inicializador_1 = pacote.get_inicializador_1()
+        assert byte_inicializador_1 == byte_inicializador_1_esperado
+
+    def test_quando_decodificar_receber_uma_lista_com_inicializador_2_0x32_o_byte_decodificado_deve_ser_0x32(self, pacote):
+        # Given
+        # NA
+
+        # When
+        pacote_a_ser_decodificado = [0x31, 0x32, 0x33, 0x05, 0x35, 0x36, 0x37, 0x38, 0x39, 0x78]
+        pacote.decodificar(pacote_a_ser_decodificado)
+
+        # Then
+        byte_inicializador_2_esperado = 0x32
+        byte_inicializador_2 = pacote.get_inicializador_2()
+        assert byte_inicializador_2 == byte_inicializador_2_esperado
+
+    def test_quando_decodificar_receber_uma_lista_com_comando_0x33_o_byte_decodificado_deve_ser_0x33(self, pacote):
+        # Given
+        # NA
+
+        # When
+        pacote_a_ser_decodificado = [0x31, 0x32, 0x33, 0x05, 0x35, 0x36, 0x37, 0x38, 0x39, 0x78]
+        pacote.decodificar(pacote_a_ser_decodificado)
+
+        # Then
+        comando_esperado = 0x33
+        comando = pacote.get_comando()
+        assert comando == comando_esperado
+
+    def test_quando_decodificar_receber_uma_lista_com_crc8_0x78_o_byte_decodificado_deve_ser_0x78(self, pacote):
+        # Given
+        # NA
+
+        # When
+        pacote_a_ser_decodificado = [0x31, 0x32, 0x33, 0x05, 0x35, 0x36, 0x37, 0x38, 0x39, 0x78]
+        pacote.decodificar(pacote_a_ser_decodificado)
+
+        # Then
+        crc8_esperado = 0x78
+        crc8 = pacote.get_crc8()
+        assert crc8 == crc8_esperado
+
+    def test_quando_decodificar_receber_uma_lista_com_10_bytes_o_tamanho_do_pacote_deve_ser_10(self, pacote):
+        # Given
+        # NA
+
+        # When
+        pacote_a_ser_decodificado = [0x31, 0x32, 0x33, 0x05, 0x35, 0x36, 0x37, 0x38, 0x39, 0x78]
+        pacote.decodificar(pacote_a_ser_decodificado)
+
+        # Then
+        tamanho_esperado = 10
+        tamanho = pacote.get_tamanho()
+        assert tamanho == tamanho_esperado
+
+    def test_quando_decodificar_receber_uma_lista_com_a_qtd_de_bytes_de_dados_informada_incorreta_deve_retornar_value_error(self, pacote):
+        with pytest.raises(ValueError):
+            # Given
+            # NA
+
+            # When
+            pacote_a_ser_decodificado = [0x31, 0x32, 0x33, 0x06, 0x35, 0x36, 0x37, 0x38, 0x39, 0x03]
+            pacote.decodificar(pacote_a_ser_decodificado)
+
+            # Then
+            assert ValueError()
+
+    def test_quando_decodificar_receber_um_pacote_valido_com_dados_deve_separar_os_dados(self, pacote):
+        # Given
+        # NA
+
+        # When
+        pacote_a_ser_decodificado = [0x31, 0x32, 0x33, 0x05, 0x35, 0x36, 0x37, 0x38, 0x39, 0x78]
+        pacote.decodificar(pacote_a_ser_decodificado)
+
+        # Then
+        dados_esperados = [0x35, 0x36, 0x37, 0x38, 0x39]
+        dados = pacote.get_dados()
+        assert dados == dados_esperados
+
+    def test_quando_decodificar_receber_um_pacote_valido_sem_dados_deve_nao_ter_os_dados(self, pacote):
+        # Given
+        # NA
+
+        # When
+        pacote_a_ser_decodificado = [0xAA, 0x55, 0x01, 0x00, 0x92]
+        pacote.decodificar(pacote_a_ser_decodificado)
+
+        # Then
+        dados_esperados = []
+        dados = pacote.get_dados()
+        assert dados == dados_esperados
+
