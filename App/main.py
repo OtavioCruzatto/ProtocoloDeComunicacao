@@ -4,6 +4,12 @@ from Comandos import Comandos
 inicializador_1: int = 0xAA
 inicializador_2: int = 0x55
 
+pacote_0 = PacoteDeDados()
+print(f"Quantidade de pacotes: {PacoteDeDados.get_quantidade_de_pacotes()}")
+print(pacote_0)
+
+del pacote_0
+
 pacote_1 = PacoteDeDados()
 pacote_1.montar(inicializador_1, inicializador_2, Comandos.COMANDO_001.value)
 print(f"Quantidade de pacotes: {PacoteDeDados.get_quantidade_de_pacotes()}")

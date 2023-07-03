@@ -3,13 +3,11 @@ import crc8
 
 class PacoteDeDados:
     __quantidade_de_pacotes: int = 0
-    __conjunto_de_indices_existentes: set = set()
 
 
     def __init__(self) -> None:
         self.__tamanho_do_pacote: int = 0
         self.__qtd_de_dados: int = 0
-        self.__indice_do_pacote: int = 0
 
         self.__inicilizador_1: int = -1
         self.__inicilizador_2: int = -1
@@ -20,7 +18,6 @@ class PacoteDeDados:
         self.__valido: bool = False
 
         PacoteDeDados.__quantidade_de_pacotes += 1
-        self.__set_indice_do_pacote()
 
 
     def __str__(self) -> str:
@@ -29,8 +26,7 @@ class PacoteDeDados:
         else:
             pacote_status = "Invalido"
 
-        return (f"Pacote: {self.__indice_do_pacote}\n"
-                f"Status: {pacote_status}\n"
+        return (f"Status: {pacote_status}\n"
                 f"Byte inicializador 1: {hex(self.__inicilizador_1)}\n"
                 f"Byte inicializador 2: {hex(self.__inicilizador_2)}\n"
                 f"Qtd de bytes no pacote: {len(self)}\n"
@@ -47,8 +43,6 @@ class PacoteDeDados:
 
     def __del__(self) -> None:
         PacoteDeDados.__quantidade_de_pacotes -= 1
-        if (self.__indice_do_pacote in PacoteDeDados.__conjunto_de_indices_existentes):
-            PacoteDeDados.__conjunto_de_indices_existentes.remove(self.__indice_do_pacote)
 
 
     def montar(self, inicializador_1: int, inicializador_2: int, comando: int, dados: list[int] = []) -> None:
@@ -220,20 +214,6 @@ class PacoteDeDados:
 
     def get_crc8(self) -> int:
         return self.__crc8
-
-
-    def get_indice(self) -> int:
-        return  self.__indice_do_pacote
-
-
-    def __set_indice_do_pacote(self) -> None:
-        for possivel_indice in range(1, 200 + 1):
-            if (possivel_indice not in PacoteDeDados.__conjunto_de_indices_existentes):
-                self.__indice_do_pacote = possivel_indice
-                PacoteDeDados.__conjunto_de_indices_existentes.add(possivel_indice)
-                return
-
-        raise ValueError("Quantidade limite de pacotes atingida!")
 
 
     @staticmethod
